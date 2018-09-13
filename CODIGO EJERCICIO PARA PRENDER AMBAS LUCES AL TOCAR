@@ -1,0 +1,62 @@
+CODIGO EJERCICIO PARA PRENDER AMBAS LUCES AL TOCAR EL BOTON
+
+#define STATE_ON 1
+#define STATE_OFF 0
+
+int state = STATE_OFF;
+
+void on();
+void off();
+
+void setup()
+{
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+  pinMode(3, INPUT);
+}
+
+
+void loop()
+{
+  int valorActual=digitalRead(3);
+  
+  if (valorActual==1)
+  {
+    if (state==STATE_OFF)
+    {
+    	state=STATE_ON;
+    }
+    else
+    {
+    	state=STATE_OFF;
+    }
+    delay (1000);
+  
+  }
+   	switch (state)
+    {
+    	case STATE_OFF:
+      		off();
+      	break;
+      
+      	case STATE_ON:
+      		on ();
+      	break;
+      		
+    
+    }
+    
+  	 }
+
+void on ()
+{
+	digitalWrite (12, HIGH);
+  	digitalWrite (13, HIGH);
+}
+
+void off()
+{
+	digitalWrite (12, LOW);
+  	digitalWrite (13, LOW);
+}
+  
