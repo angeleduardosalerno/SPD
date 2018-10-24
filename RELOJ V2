@@ -1,0 +1,35 @@
+
+unsigned long segundos;
+unsigned long minutos;
+unsigned long horas;
+
+void loop() 
+{
+	segundos=millis() / 1000;
+	minutos=segundos / 60;
+	horas = minutos / 60;
+	mostrarReloj ();
+}
+
+void mostrarReloj ()
+{
+	int segundosDisplay=segundos % 60; // el resto de segundos!
+	int minutosDisplay=minutos % 60; // el resto de minutos 
+	int horasDisplay=horas % 60;
+
+	lcd.setCursor(0,0); // ES EL INICIO DE LA PANTALLA DEL DISPLAY !!!
+
+	if(horasDisplay < 10) lcd.print ("0");
+	lcd.print (horasDisplay)
+	lcd.print (":"):
+
+	//y SIGUE. VER FOTOS!!!!
+
+
+
+
+
+
+
+
+}
