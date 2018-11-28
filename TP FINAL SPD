@@ -1,0 +1,408 @@
+#include <LiquidCrystal.h> // SE INCLUYE LA BIBLIOTECA LIQUID CRISTAL PARA TRABAJAR CON DISPLAY
+
+//  ***********************DEFINICION DE CONSTANTES****************************
+
+#define BUTTON_RIGHT 0      // boton derecha =0
+#define BUTTON_UP 1         // boton arriba = 1
+#define BUTTON_DOWN 2       // boton abajo =2
+#define BUTTON_LEFT 3       // boton izquierda = 3
+#define BUTTON_SELECT 4     // boton seleccionar =4
+#define BUTTON_NONE 5
+
+
+//*******************SETEO DEL DISPLAY ******************************************
+
+LiquidCrystal lcd(8, 9, 4, 5, 6, 7); // SE LE INDICA EN QUE PINES ESTA CONECTADA LA PANTALLA LCD, LOS PRIMEROS DOS SON DE CONEXION, EL 4 -5 -6 -7 SON DE DATOS (QUE USA LA PANTALLA)
+
+
+
+// ********* DECLARACION DE FUNCIONES A USAR EN EL PROGRAMA*********************
+
+void inicializar();         // INICIALIZA PANTALLA
+void apagarLeds();          // APAGA LEDS
+int readButtons();          // LEE LOS BOTONES
+
+
+
+//****************DECLARACION E INICIALIZACION DE VARIABLES! ****************
+
+    
+    int ubicacion = 1;          // INICIALIZACION DE UBICACION EN 1
+    int bandera = 0;
+    int verUno = 0;
+    int verDos = 0;
+    int verTres = 0;
+    int verCuatro = 0;
+    int validacion = 0;
+    int finalizar = 0;
+    boolean valorUno=false, valorDos=false, valorTres=false, valorCuatro=false; // INICIALIZACION DE VARIABLE BOLLEANA CON 2 TIPOS POSIBLES DE DATOS 1 TRUE O 0 FALSE
+
+
+// *****************************CONFIGURACION DEL SETUP!*************************
+
+void setup()
+{
+  pinMode(11,OUTPUT);               //CONFIGURACION DE LOS PINES 11, A3, A4, A5 , 10, 12, 13 COMO SALIDA
+  pinMode(A3,OUTPUT);
+  pinMode(A4,OUTPUT);
+  pinMode(A5,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(12,OUTPUT);
+  pinMode(13,OUTPUT);
+
+  digitalWrite(11,HIGH);            //INICIALIZACION DE LOS PINES 11, A3, A4, A5 , 10, 12, 13 CON EL VALOR ---- 1 - HIGH
+  digitalWrite(A3,HIGH);            // HIGH EN ESTE CIRCUITO EQUIVALE A LOW POR QUE ESTA CONECTADO A LA INVERSA OJO!!
+  digitalWrite(A4,HIGH);
+  digitalWrite(A5,HIGH);
+  digitalWrite(10,HIGH);
+  digitalWrite(12,HIGH);
+  digitalWrite(13,HIGH);
+
+  lcd.begin(16, 2);                 // INICIALIZACION DE LA PANTALLA LCD, CONFIGURADA CON 16 COLUMNAS Y 2 FILAS!
+  lcd.setCursor(0,0);               // EL CURSOR INICIA EN LA FILA SUPERIOR IZQUIERDA, QUE ES LA POSICION 0, 0
+  lcd.print("PRESIONE SELECT");       // SE IMPRIME EL MENSAJE QUE INDICA QUE SE INGRESE SELECT PARA INICIAR EL PROGRAMA!
+
+}
+
+void loop()
+{
+  int i;
+  int currentButton = readButtons(); // LA FUNCION READ DEVUELVE EL BOTON PRESIONADO Y SE REALIZA EL SWITCH...
+  delay(400);
+
+  switch (currentButton){
+
+    case 0:         // SI PRESIONARON EL BOTON DERECHO *******************
+
+    	if (ubicacion < 4 && bandera == 1) // SI ESTA DENTRO DE LOS 4 ESPACIOS Y SE PRESIONO EL BOTON SELECT
+    	{
+    		ubicacion++; // AUMENTA UNA UBICACION, DESPLAZANDOSE UN LUGAR HACIA LA DERECHA
+    	}
+
+    break;
+
+    
+    case 1: // SI PRESIONARON EL BOTON ARRIBA *************************** AGREGA EL 1
+
+          if(ubicacion==1 && bandera == 1) // SI ESTA EN EL PRIMER LUGAR Y PULSARON SELECT
+          {
+          	valorUno=true; // POSICION 1 VALE 1
+            verUno = 1;
+            lcd.setCursor(0,0); // SETEAS EL CURSOR EN LA POSICION 1
+      		lcd.print("1"); // IMPRIMIS EL DIGITO 1
+          }
+
+          if(ubicacion==2 && bandera == 1) // SI ESTA EN EL SEGUNDO LUGAR Y PULSARON SELECT
+          {
+          	valorDos=true; // POSICION 2 VALE 2
+            verDos = 1;
+            lcd.setCursor(1,0); // PASAS A LA SIGUIENTE COLUMNA, LA 2 Y PONES EL 1
+      		lcd.print("1");
+          }
+
+          if(ubicacion==3 && bandera == 1) // SI ESTA EN EL TERCER LUGAR Y PULSARON SELECT
+          {
+          	valorTres=true;
+            verTres = 1;
+            lcd.setCursor(2,0); // PASAS A LA SIGUIENTE COLUMNA, LA 3 Y PONES EL 1
+      		lcd.print("1");
+          }
+
+          if(ubicacion==4 && bandera == 1)
+          {
+          	valorCuatro=true;
+            verCuatro = 1;
+            lcd.setCursor(3,0);
+      		lcd.print("1");
+          }
+    	
+    break;  // ENTONCES, EL UP SETEA LOS CURSORES EN LA POSICION CORRESPONDIENTE E IMPRIME EL 1
+
+
+
+    case 2:  // SI PRESIONARON EL BOTON ABAJO ***************************AGREGA EL 0
+
+          if(ubicacion==1 && bandera == 1) // SI ESTA EN EL PRIMER LUGAR Y PULSARON SELECT
+          {
+          	valorUno = false; // POSICION 1, VALE 0
+            verUno = 1;
+            lcd.setCursor(0,0); // CURSOR EN LA POSICION 1
+      		lcd.print("0"); // SE IMPRIME EL 0
+          }
+
+          if(ubicacion==2 && bandera == 1) // SI ESTA EN EL SEGUNDO LUGAR Y PULSARON SELECT
+          {
+          	valorDos = false;
+            verDos = 1;
+            lcd.setCursor(1,0); // PASAS A LA SIGUIENTE COLUMNA, LA 2 Y PONES EL 0
+      		lcd.print("0");
+          }
+
+          if(ubicacion==3 && bandera == 1)
+          {
+          	valorTres = false;
+            verTres = 1;
+            lcd.setCursor(2,0);
+      		lcd.print("0");
+          }
+
+          if(ubicacion==4 && bandera == 1)
+          {
+          	valorCuatro = false;
+            verCuatro = 1;
+        	lcd.setCursor(3,0);
+      		lcd.print("0");
+          }
+    	
+
+    break; // ENTONCES, EL DOWN SETEA LOS CURSORES EN LA POSICION CORRESPONDIENTE E IMPRIME EL 0
+
+   
+    
+    case 3:          // SI PRESIONARON EL BOTON IZQUIERDO ***************
+
+      if (ubicacion > 1 && bandera == 1)
+      {
+      	ubicacion--;  // RESTA UNA UBICACION, DESPLAZANDOSE UN LUGAR HACIA LA IZQUIERDA
+      }
+    break;
+
+
+
+    case 4 :    // SI PRESIONARON EL BOTON SELECT ****************************************************************
+
+    if (bandera == 0 && finalizar == 0) // SI ES LA PRIMERA VEZ QUE ENTRA...
+    {
+      	lcd.setCursor(0,0); // SE UBICA EL CURSOR EN LA POSICION 0 , 0
+  		lcd.print("*");     // SE IMPRIME UN * POR CADA DIGITO BINARIO SON 4 ENTONCES ****
+  		lcd.print("*");
+  		lcd.print("*");
+  		lcd.print("*");
+    	lcd.print(" ");
+      	lcd.print(" ");
+      	lcd.print(" ");
+    	lcd.print(" ");
+     	lcd.print(" ");
+     	lcd.print(" ");
+   		lcd.print(" ");
+      	lcd.print(" ");
+    	lcd.print(" ");
+      	lcd.print(" ");
+      	lcd.print(" ");
+
+    	bandera=1;      // CAMBIA EL FLAG
+        apagarLeds();   // SE APAGAN LOS LEDS  ------------------------------
+    }
+
+    if (verUno==1 && verDos == 1 && verTres == 1 && verCuatro == 1 && bandera == 1) // SI INGRESARON TODOS LOS DIGITOS!
+    {
+        validacion = 1; // CAMBIA EL VALOR DE VALIDACION
+
+    }
+
+    break;
+  	}//*****************************************************OJOO VER SI ESTO ESTA OK
+
+    if (finalizar == 1 && currentButton ==4) // SI FINALIZAR ESTA EN 1, POR HABER INGRESADO LOS DATOS, Y PRESIONAN EL BOTON 4 SELECT
+    {
+        inicializar(); // SE RESETEA OTRA VEZ
+    }
+
+
+    if (bandera == 1 && finalizar == 0) // SI ES LA PRIMERA VEZ QUE ENTRA ------PARA PONER EL GUION COMO GUIA ABAJO DE LOS DIGITOS!
+    {
+        lcd.setCursor(0,1); // SE UBICA EL CURSOR ABAJO A LA IZQUIERDA, COLUMNA 0 FILA 1 (LA DE ABAJO)
+
+        if (ubicacion == 1) // CUANDO LA UBICACION ES 1, CUANDO ESTA EN LA COLUMNA 1
+        {
+            lcd.print("_"); // SE IMPRIME UN GUION BAJO EN EL PRIMER DIGITO
+            lcd.print(" ");
+            lcd.print(" ");
+            lcd.print(" ");
+        }
+
+        else if (ubicacion == 2) // CUANDO LA UBICACION ES 2
+        {
+            lcd.print(" ");
+            lcd.print("_"); // SE IMPRIME UN GUION BAJO EN EL SEGUNDO DIGITO
+            lcd.print(" ");
+            lcd.print(" ");
+        }
+        else if (ubicacion == 3) //ETC
+        {
+            lcd.print(" ");
+            lcd.print(" ");
+            lcd.print("_");
+            lcd.print(" ");
+        }
+        else if (ubicacion == 4) // ETC
+        {
+            lcd.print(" ");
+            lcd.print(" ");
+            lcd.print(" ");
+            lcd.print("_");
+        }
+    }
+
+     if (validacion == 1 && finalizar == 0) // SI INGRESARON TODOS LOS DIGITOS PERO TODAVIA NO FINALIZARON
+     {
+          if (valorUno == false) // SI EL VALOR 1 VALE 0
+          {
+            digitalWrite(11,HIGH); // ESCRIBIS EN EL PIN 11 QUE ES EL PRIMERO DE DATOS, EL MAS SIGNIFICATIVO QUE ESTA APAGADO, ES 0
+          }
+          else // SI EL VALOR 1 VALE 1
+          {
+            digitalWrite(11,LOW); // ESCRIBIS EN EL PIN 11 QUE ES EL PRIMERO DE DATOS, EL MAS SIGNIFICATIVO QUE ESTA ON, ES 1
+           }
+
+          if (valorDos == false) // ES EL SEGUNDO BIT DE DATO
+          {
+            digitalWrite(A3,HIGH); // EL PIN ANALOGICO 3 QUE ES EL SEGUNDO DE DATOS SI ESTA HIGH SE APAGA
+          }
+          else
+          {
+            digitalWrite(A3,LOW); // EL PIN ANALOGICO 3 QUE ES EL SEGUNDO DE DATOS SI ESTA LOW SE PRENDE
+           }
+
+          if (valorTres == false)
+          {
+            digitalWrite(A4,HIGH);
+          }
+          else
+          {
+            digitalWrite(A4,LOW);
+           }
+
+          if (valorCuatro == false)
+          {
+            digitalWrite(A5,HIGH);
+          }
+          else
+          {
+            digitalWrite(A5,LOW);
+            }
+
+    //*******HASTA ACA SE PASAN LOS DIGITOS INGRESADOS 0 1 A LOS LEDS ------------!!
+
+
+	// SE VUELVE A REINICIAR EL PROCEDIMIENTO DE INGRESO DE DATOS
+
+	lcd.begin(16, 2); // INICIALIZACION DE LA PANTALLA LED CON 16 COLUMNAS Y 2 FILAS
+
+  	lcd.setCursor(0,0);
+
+  	lcd.print("PRESIONE SELECT");
+
+    // SE HACEN TODAS LAS COMBINACIONES POSIBLES PARA EL VALOR EN LA POSICION 3 ************
+
+    if ((valorUno == false && valorDos == false && valorCuatro == true)||
+       (valorUno == false && valorDos == true && valorCuatro == false)||
+       (valorUno == true && valorDos == false && valorCuatro == false)||
+       (valorUno == true && valorDos == true && valorCuatro == true))
+      {
+        delay(500); // DELAY ANTES QUE SE ENCIENDAN LOS LEDS AMARILLOS
+      	digitalWrite(13,LOW); // SI SE CUMPLE LA CONDICION, SE ENCIENDE LA PRIMERA LUZ AMARILLA LUEGO DE 500 MILISEGUNDOS
+      }
+      else
+      {
+        digitalWrite(13,HIGH); // SI LA CONDICION NO SE CUMPLE, LA LUZ AMARILLA SIGUE APAGADA!
+       }
+
+       // SE HACEN TODAS LAS COMBINACIONES POSIBLES PARA EL VALOR EN LA POSICION 2 ************
+
+    if ((valorUno == false && valorTres == false && valorCuatro == true)||
+       (valorUno == false && valorTres == true && valorCuatro == false)||
+       (valorUno == true && valorTres == false && valorCuatro == false)||
+       (valorUno == true && valorTres == true && valorCuatro == true))
+      {
+        delay(500);
+        digitalWrite(12,LOW); // SI SE CUMPLE LA CONDICION, SE ENCIENDE LA SEGUNDA LUZ AMARILLA LUEGO DE 500 MILISEGUNDOS
+      }
+      else
+      {
+        digitalWrite(12,HIGH);
+       }
+
+        // SE HACEN TODAS LAS COMBINACIONES POSIBLES PARA EL VALOR EN LA POSICION 1 ************
+
+    if ((valorDos == false && valorTres == false && valorCuatro == true)||
+       (valorDos == false && valorTres == true && valorCuatro == false)||
+       (valorDos == true && valorTres == false && valorCuatro == false)||
+       (valorDos == true && valorTres == true && valorCuatro == true))
+      {
+        delay(500);
+        digitalWrite(10,LOW); // SI SE CUMPLE LA CONDICION, SE ENCIENDE LA TERCERA LUZ AMARILLA LUEGO DE 500 MILISEGUNDOS
+      }
+      else
+      {
+        digitalWrite(10,HIGH);
+       }
+
+    finalizar = 1;  // EL PROCEDIMIENTO ESTA FINALIZADO!
+
+     }
+  }
+
+
+//******************CUERPO DE LAS FUNCIONES: ---------------------->
+
+
+
+//------------------------------
+
+void inicializar () // SE VUELVE A PONER LAS VARIABLES EN 0, SE VUELVE A INICIALIZAR EN EL LOOP!!!
+{
+    bandera = 0;
+    verUno = 0;
+    verDos = 0;
+    verTres = 0;
+    verCuatro = 0;
+    validacion = 0;
+    ubicacion = 1;  // UBICACION QUEDA EN 1
+    finalizar = 0;
+
+}
+
+
+
+void apagarLeds() // SE APAGAN EN HIGH POR QUE ESTAN CONECTADOS A LA INVERSA, ESTO EQUIVALDRIA AL LOW EN ESTE CIRCUITO..
+{
+    digitalWrite(11,HIGH);
+    digitalWrite(A3,HIGH);
+    digitalWrite(A4,HIGH);
+    digitalWrite(A5,HIGH);
+    digitalWrite(10,HIGH);
+    digitalWrite(12,HIGH);
+    digitalWrite(13,HIGH);
+
+}
+
+
+//------------------------------
+
+int readButtons()           // DEVUELVE EL BOTON QUE SE PRESIONO Y REALZA EL SWITCH EN EL LOOP
+{
+    int value = analogRead(0); // Leemos A0 - LECTURA ANALOGICA DONDE ESTA CONECTADO EL POTENCIOMETRO!!!
+
+
+    if (value > 900)         //COMPARACION CON MARGEN MAYOR
+        return BUTTON_NONE; // Ningun boton pulsado, DEVUELVE 5
+    
+    if (value < 50)
+    
+        return BUTTON_RIGHT; // BOTON DERECHA, DEVUELVE 0
+    if (value < 250)
+        return BUTTON_UP; // BOTON ARRIBA, DEVUELVE 1
+    
+    if (value < 450)
+        return BUTTON_DOWN; // BOTON ABAJO , DEVUELVE 2
+    
+    if (value < 650)
+        return BUTTON_LEFT; // BOTON IZQ , DEVUELVE 3
+    
+    if (value < 850)
+        return BUTTON_SELECT; // BOTON SELECT , DEVUELVE 4
+
+    return BUTTON_NONE; // Por si todo falla
+}
+
